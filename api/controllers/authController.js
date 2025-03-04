@@ -1,13 +1,17 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import knex from '../config/db.js'; // Import Knex instance
-import dotenv from 'dotenv';
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const knex = require('../config/db'); // Import Knex instance
+const dotenv = require('dotenv');
 
 dotenv.config();
 const SECRET_KEY = process.env.JWT_SECRET;
 
-// Register a new user
-export const register = async (req, res) => {
+/**
+ * Registers a new user.
+ * @param {Object} req - Request object containing user details.
+ * @param {Object} res - Response object.
+ */
+const register = async (req, res) => {
     try {
         const { full_name, email, password, role } = req.body;
 
@@ -31,8 +35,12 @@ export const register = async (req, res) => {
     }
 };
 
-// Login user and generate JWT token
-export const login = async (req, res) => {
+/**
+ * Logs in a user and returns a JWT token.
+ * @param {Object} req - Request object containing email and password.
+ * @param {Object} res - Response object.
+ */
+const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -48,17 +56,28 @@ export const login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        // Generate JWT token
-        const token = jwt.sign({ user_id: user.user_id, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
+        // Generate JWT token (30-day expiration)
+        const token = jwt.sign(
+            { user_id: user.user_id, role: user.role },
+            SECRET_KEY,
+            { expiresIn: '30d' } // ✅ Updated to 30 days
+        );
 
-        res.json({ token, user: { user_id: user.user_id, full_name: user.full_name, email: user.email, role: user.role } });
+        res.json({
+            token,
+            user: { user_id: user.user_id, full_name: user.full_name, email: user.email, role: user.role }
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// Get current user details
-export const getUser = async (req, res) => {
+/**
+ * Gets the current user's details.
+ * @param {Object} req - Request object with authenticated user data.
+ * @param {Object} res - Response object.
+ */
+const getUser = async (req, res) => {
     try {
         const user = await knex('users').where({ user_id: req.user.user_id }).first();
 
@@ -71,3 +90,6 @@ export const getUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Export functions for use in routes
+module.exports = { register, login, getUser };

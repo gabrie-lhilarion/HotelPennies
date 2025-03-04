@@ -22,6 +22,16 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+/**
+ * @function generateUserReference
+ * @description Generates a unique alphanumeric reference for users.
+ * @returns {string} - A unique reference of at least 8 characters.
+ */
+function generateUserReference() {
+    return Math.random().toString(36).substring(2, 10).toUpperCase();
+}
+
+
 // Initialize Knex instance
 const db = knex({
     client: 'pg',
@@ -41,10 +51,11 @@ async function setupDatabase() {
         const hasUsersTable = await db.schema.hasTable('users');
         if (!hasUsersTable) {
             await db.schema.createTable('users', (table) => {
-                table.uuid('user_id').primary().defaultTo(db.raw('gen_random_uuid()'));
+                table.increments('user_id').primary();
                 table.string('full_name').notNullable();
                 table.string('email').unique().notNullable();
                 table.string('password').notNullable();
+                table.string('user_reference').unique().notNullable();
                 table.string('role').defaultTo('guest'); // 'admin', 'hotel_owner', 'affiliate_marketer'
                 table.timestamps(true, true);
             });
@@ -119,4 +130,4 @@ async function setupDatabase() {
 // Run setup when this file is loaded
 setupDatabase();
 
-module.exports = db;
+module.exports = { db, generateUserReference };

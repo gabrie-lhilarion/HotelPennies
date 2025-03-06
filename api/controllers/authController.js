@@ -1,10 +1,15 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const knex = require('../config/db'); // Import Knex instance
+const knex = require('../database/db'); // Import Knex instance
 const dotenv = require('dotenv');
+const crypto = require('crypto');
+const { sendPasswordResetEmail } = require('../email/emailService');
+
 
 dotenv.config();
 const SECRET_KEY = process.env.JWT_SECRET;
+
+
 
 /**
  * Registers a new user.
@@ -91,5 +96,37 @@ const getUser = async (req, res) => {
     }
 };
 
+
+const requestPasswordReset = async (req, res) => {
+    const { email } = req.body;
+    console.log({ email })
+    try {
+        const user = await knex('users').where({ email }).first();
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Generate a random token (valid for 1 hour)
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+        // Save token in DB
+        await knex('password_resets').insert({
+            email,
+            token: resetToken,
+            expires_at: expiresAt,
+        });
+
+        // Send email
+        await sendPasswordResetEmail(email, resetToken);
+
+        res.json({ message: "Password reset email sent successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Something went wrong" });
+    }
+}
+
+
+
 // Export functions for use in routes
-module.exports = { register, login, getUser };
+module.exports = { register, login, getUser, requestPasswordReset };

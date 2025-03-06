@@ -57,6 +57,8 @@ async function setupDatabase() {
                 table.string('password').notNullable();
                 table.string('user_reference').unique().notNullable();
                 table.string('role').defaultTo('guest'); // 'admin', 'hotel_owner', 'affiliate_marketer'
+                table.string('reset_token').nullable(); // For password reset
+                table.timestamp('reset_token_expires').nullable();
                 table.timestamps(true, true);
             });
             console.log('✅ Created users table.');
@@ -90,6 +92,19 @@ async function setupDatabase() {
                 table.timestamps(true, true);
             });
             console.log('✅ Created rooms table.');
+        }
+
+        // Create password_resets table
+        const hasPasswordResetsTable = await db.schema.hasTable('password_resets');
+        if (!hasPasswordResetsTable) {
+            await db.schema.createTable('password_resets', (table) => {
+                table.increments('id').primary();
+                table.string('email').notNullable();
+                table.string('token').notNullable();
+                table.timestamp('expires_at').notNullable();
+                table.timestamps(true, true);
+            });
+            console.log('✅ Created password_resets table.');
         }
 
         // Create bookings table

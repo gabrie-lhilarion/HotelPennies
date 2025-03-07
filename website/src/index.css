@@ -1,7 +1,23 @@
 @import "tailwindcss";
-
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   line-height: 1.5;
 
+}
+
+#top-header {
+  border-bottom: solid 1px #ccc;
+}
+
+.top-links li {
+  padding: 7px 15px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  font-size: small;
+}
+
+.top-links li:hover {
+  background-color: #ECA69A;
+  cursor: pointer
 }

@@ -1,0 +1,13 @@
+🌞 Light Theme (Emerald Accents)
+Background: #ECFDF5 (Emerald 100)
+Primary Accent: #34D399 (Emerald 400)
+Secondary Accent: #10B981 (Emerald 500)
+Text Color: #064E3B (Emerald 900)
+Border Color: #A7F3D0 (Emerald 200)
+
+🌙 Dark Theme (Deep Emerald)
+Background: #022C22 (Emerald 950)
+Primary Accent: #065F46 (Emerald 800)
+Secondary Accent: #047857 (Emerald 700)
+Text Color: #D1FAE5 (Emerald 200)
+Border Color: #10B981 (Emerald 500)

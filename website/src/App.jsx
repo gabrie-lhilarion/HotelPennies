@@ -43,8 +43,20 @@ function App() {
       </section>
 
       <section className='m-0 p-0'>
-        <div id='slider' className='w-[100%] m-auto overflow-hidden'>
+        <div id='slider' className='w-[100%] m-auto bg-emerald-300 overflow-hidden'>
           <SimpleSlider />
+        </div>
+      </section>
+
+      <section id='booking-controll' className='relative h-[200px] bg-red-500'>
+        <article className='absolute h-[100px] top-[-100px] bg-green w-[100%]'>
+          <div className='w-[70%] h-[200px] bg-emerald-200 m-auto rounded-sm'>
+            settings
+          </div>
+        </article>
+
+        <div>
+          HELLO
         </div>
       </section>
 

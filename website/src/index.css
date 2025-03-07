@@ -21,3 +21,13 @@
   background-color: #ECA69A;
   cursor: pointer
 }
+
+#slider div {
+  height: 400px;
+}
+
+#slider div h3 {
+  font-size: 5em;
+  font-weight: bolder;
+  text-align: center;
+}

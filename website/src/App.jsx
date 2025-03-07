@@ -43,11 +43,14 @@ function App() {
       </section>
 
       <section className='m-0 p-0'>
-        <div id='slider' className='w-[98%] m-auto bg-red-300 '>
+        <div id='slider' className='w-[100%] m-auto overflow-hidden'>
           <SimpleSlider />
         </div>
       </section>
 
+      <section id="widgets" className='bg-green-400'>
+        STATES
+      </section>
       <InstallButton />
 
 

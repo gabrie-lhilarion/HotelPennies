@@ -25,6 +25,8 @@
 
 #slider div {
   height: 400px;
+  background-color: #eee;
+  border-bottom: solid 1px #ccc;
 }
 
 #slider div h3 {

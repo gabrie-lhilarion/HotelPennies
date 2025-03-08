@@ -18,7 +18,8 @@
 }
 
 .top-links li:hover {
-  background-color: #ECA69A;
+  background-color: #064E3B;
+  color: #ECFDF5;
   cursor: pointer
 }
 

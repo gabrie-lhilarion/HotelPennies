@@ -1,30 +1,20 @@
-import { FaHotel, FaUser, FaRegStar } from "react-icons/fa";
+import { FaHotel, FaUser, FaRegStar, FaCalendarPlus, FaCalendarMinus, FaSearch, FaMapMarkerAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
 const IconComponent = ({ icon, size = 24 }) => {
-    // State to track theme and update colors
-    const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
-    // Effect to listen for theme changes in localStorage
-    useEffect(() => {
-        const handleStorageChange = () => {
-            setTheme(localStorage.getItem("theme") || "light");
-        };
-
-        window.addEventListener("storage", handleStorageChange);
-        return () => window.removeEventListener("storage", handleStorageChange);
-    }, []);
-
-    // Set color dynamically based on theme
-    const color = theme === "dark" ? "#A7F3D0" : "#022C22";
-
     // Icon Mapping
     const icons = {
-        hotel: <FaHotel size={size} color={color} />,
-        user: <FaUser size={size} color={color} />,
-        star: <FaRegStar size={size} color={color} />,
+        hotel: <FaHotel size={size} />,
+        user: <FaUser size={size} />,
+        star: <FaRegStar size={size} />,
+        calendarPlus: <FaCalendarPlus size={size} />,
+        calendarMinus: <FaCalendarMinus size={size} />,
+        search: <FaSearch size={size} />,
+        location: <FaMapMarkerAlt size={size} />,
     };
+
+    // Select the icon based on the `icon` prop, default to `FaHotel` if not found
+    const selectedIcon = icons[icon] || <FaHotel size={size} />;
 
     return (
         <motion.div
@@ -32,7 +22,7 @@ const IconComponent = ({ icon, size = 24 }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            {icons[icon] || <FaHotel size={size} color={color} />}
+            {selectedIcon}
         </motion.div>
     );
 };
